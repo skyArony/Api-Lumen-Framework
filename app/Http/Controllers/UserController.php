@@ -23,7 +23,7 @@ class UserController extends ApiController
       );
       $userData[] = $array;
     }
-    $data = json_encode($userData);
+    $data = json_encode($userData, JSON_UNESCAPED_UNICODE);
 
     // return $this->response->error('This is an error.', 404);
     // return $this->response->errorNotFound();

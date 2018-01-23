@@ -16,7 +16,7 @@ class ApiController extends BaseController
     public $debug = '未调试';
 
     // 构造响应基本框架
-    public  function createResponse($data, $status, $errcode)
+    public  function createResponse($data, $status, $errcode, $sessionid = null)
     {
         // 设置 errMsg
         $this->__setErrMsg($errcode);
@@ -24,6 +24,7 @@ class ApiController extends BaseController
             'errcode' => $errcode,
             'status' => $status,
             'errmsg' => $this->errmsg,
+            'sessionid' => $sessionid,
             'header' => $this->header,
             'debug' => $this->debug,
             'data' => $data
@@ -61,6 +62,7 @@ class ApiController extends BaseController
             -8 => '数据不存在',
             -9 => '越权限操作',
             -10 => '账户可调用次数不足',
+            -11 => '数据不存在',
             -65535 => '参数错误'
         );
         $this->errmsg = $msgForCode[$errcode];

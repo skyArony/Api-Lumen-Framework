@@ -92,6 +92,7 @@ $app['Dingo\Api\Exception\Handler']->setErrorFormat([
     'errcode' => -5,
     'status' => ':status_code',
     'errmsg' => ':message',
+    'sessionid' => null,
     'data' => null,
     'header' => "未封包",
     'debug' => ':debug'

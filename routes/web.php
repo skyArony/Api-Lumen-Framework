@@ -66,3 +66,8 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers'], function ($api) {
   // 设置用户的可调用次数
   $api->patch('/perm/left-times', 'PermController@setLeftTimes');
 });
+
+$api->version('v1', ['namespace' => 'App\Http\Controllers\Passport'], function ($api) {
+  $api->post('/password/bind', 'PasswordController@bindPassword');   //  密码绑定
+  $api->get('/edu/grade/{term}', 'EduGradeController@getGrade');
+});

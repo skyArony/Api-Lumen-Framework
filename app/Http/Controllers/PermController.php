@@ -29,7 +29,7 @@ class PermController extends ApiController
             $item->intro = $request->intro;
             if ($item->save()) {
                 $res = ApiItem::where('item_key', '=', $request->key)->first();
-                $data = json_encode($res->toArray());
+                $data = json_encode($res->toArray(), JSON_UNESCAPED_UNICODE);
                 // 成功
                 return $this->createResponse($data, 201, 0);
             } else {
@@ -74,7 +74,7 @@ class PermController extends ApiController
                 if ($item->save()) {
                     $key = $request->has('newkey') ? $request->newkey : $request->key;
                     $res = ApiItem::where('item_key', '=', $key)->first();
-                    $data = json_encode($res->toArray());
+                    $data = json_encode($res->toArray(), JSON_UNESCAPED_UNICODE);
                     // 成功
                     return $this->createResponse($data, 201, 0);
                 } else {
@@ -95,7 +95,7 @@ class PermController extends ApiController
     {
         if ($request->has('key')) {
             if ($res = ApiItem::where('item_key', '=', $request->key)->first()) {
-                $data = json_encode($res->toArray());
+                $data = json_encode($res->toArray(), JSON_UNESCAPED_UNICODE);
                 return $this->createResponse($data, 200, 0);
             } else {
                 return $this->createResponse(null, 404, -8);
@@ -117,7 +117,7 @@ class PermController extends ApiController
             $group->intro = $request->intro;
             if ($group->save()) {
                 $res = ApiGroup::where('group_key', '=', $request->key)->first();
-                $data = json_encode($res->toArray());
+                $data = json_encode($res->toArray(), JSON_UNESCAPED_UNICODE);
                 return $this->createResponse($data, 201, 0);
             } else {
                 return $this->createResponse(null, 500, -2);
@@ -157,7 +157,7 @@ class PermController extends ApiController
                 if ($group->save()) {
                     $key = $request->has('newkey') ? $request->newkey : $request->key;
                     $res = Apigroup::where('group_key', '=', $key)->first();
-                    $data = json_encode($res->toArray());
+                    $data = json_encode($res->toArray(), JSON_UNESCAPED_UNICODE);
                     // 成功
                     return $this->createResponse($data, 201, 0);
                 } else {
@@ -177,7 +177,7 @@ class PermController extends ApiController
     {
         if ($request->has('key')) {
             if ($res = ApiGroup::where('group_key', '=', $request->key)->first()) {
-                $data = json_encode($res->toArray());
+                $data = json_encode($res->toArray(), JSON_UNESCAPED_UNICODE);
                 return $this->createResponse($data, 200, 0);
             } else {
                 return $this->createResponse(null, 404, -8);
@@ -200,7 +200,7 @@ class PermController extends ApiController
             if ($request->has('istemp')) $collection->istemp = $request->istemp;
             if ($collection->save()) {
                 $res = ApiCollection::where('collection_key', '=', $request->key)->first();
-                $data = json_encode($res->toArray());
+                $data = json_encode($res->toArray(), JSON_UNESCAPED_UNICODE);
                 return $this->createResponse($data, 201, 0);
             } else {
                 return $this->createResponse(null, 500, -2);
@@ -241,7 +241,7 @@ class PermController extends ApiController
                 if ($collection->save()) {
                     $key = $request->has('newkey') ? $request->newkey : $request->key;
                     $res = ApiCollection::where('collection_key', '=', $key)->first();
-                    $data = json_encode($res->toArray());
+                    $data = json_encode($res->toArray(), JSON_UNESCAPED_UNICODE);
                     // 成功
                     return $this->createResponse($data, 201, 0);
                 } else {
@@ -261,7 +261,7 @@ class PermController extends ApiController
     {
         if ($request->has('key')) {
             if ($res = ApiCollection::where('collection_key', '=', $request->key)->first()) {
-                $data = json_encode($res->toArray());
+                $data = json_encode($res->toArray(), JSON_UNESCAPED_UNICODE);
                 // 成功
                 return $this->createResponse($data, 200, 0);
             } else {
@@ -279,7 +279,7 @@ class PermController extends ApiController
             switch ($request->type) {
                 case 'item':
                     if ($res = ApiItem::all()) {
-                        $data = json_encode($res->toArray());
+                        $data = json_encode($res->toArray(), JSON_UNESCAPED_UNICODE);
                         return $this->createResponse($data, 200, 0);
                     } else {
                         return $this->createResponse(null, 404, -8);
@@ -287,7 +287,7 @@ class PermController extends ApiController
                     break;
                 case 'group':
                     if ($res = ApiGroup::all()) {
-                        $data = json_encode($res->toArray());
+                        $data = json_encode($res->toArray(), JSON_UNESCAPED_UNICODE);
                         return $this->createResponse($data, 200, 0);
                     } else {
                         return $this->createResponse(null, 404, -8);
@@ -295,7 +295,7 @@ class PermController extends ApiController
                     break;
                 case 'collection':
                     if ($res = ApiCollection::all()) {
-                        $data = json_encode($res->toArray());
+                        $data = json_encode($res->toArray(), JSON_UNESCAPED_UNICODE);
                         return $this->createResponse($data, 200, 0);
                     } else {
                         return $this->createResponse(null, 404, -8);
@@ -457,7 +457,7 @@ class PermController extends ApiController
                 if ($request->has('end')) $collectionUser->end_at = date("Y-m-d h:i:s", $request->end);
                 if ($collectionUser->save()) {
                     $res = CollectionUser::where('collection_key', '=', $request->collection)->where('email', '=', $request->email)->first();
-                    $data = json_encode($res->toArray());
+                    $data = json_encode($res->toArray(), JSON_UNESCAPED_UNICODE);
                     // 成功
                     return $this->createResponse($data, 201, 0);
                 } else {
@@ -479,7 +479,7 @@ class PermController extends ApiController
             switch ($request->type) {
                 case 'gi':
                     if ($res = GroupItem::where('group_key', '=', $request->container)->get()) {
-                        $data = json_encode($res->toArray());
+                        $data = json_encode($res->toArray(), JSON_UNESCAPED_UNICODE);
                         return $this->createResponse($data, 200, 0);
                     } else {
                         return $this->createResponse(null, 404, -8);
@@ -487,7 +487,7 @@ class PermController extends ApiController
                     break;
                 case 'ci':
                     if ($res = CollectionItem::where('collection_key', '=', $request->container)->get()) {
-                        $data = json_encode($res->toArray());
+                        $data = json_encode($res->toArray(), JSON_UNESCAPED_UNICODE);
                         return $this->createResponse($data, 200, 0);
                     } else {
                         return $this->createResponse(null, 404, -8);
@@ -495,7 +495,7 @@ class PermController extends ApiController
                     break;
                 case 'cg':
                     if ($res = CollectionGroup::where('collection_key', '=', $request->container)->get()) {
-                        $data = json_encode($res->toArray());
+                        $data = json_encode($res->toArray(), JSON_UNESCAPED_UNICODE);
                         return $this->createResponse($data, 200, 0);
                     } else {
                         return $this->createResponse(null, 404, -8);
@@ -503,7 +503,7 @@ class PermController extends ApiController
                     break;
                 case 'cu':
                     if ($res = CollectionUser::where('collection_key', '=', $request->container)->get()) {
-                        $data = json_encode($res->toArray());
+                        $data = json_encode($res->toArray(), JSON_UNESCAPED_UNICODE);
                         return $this->createResponse($data, 200, 0);
                     } else {
                         return $this->createResponse(null, 404, -8);
