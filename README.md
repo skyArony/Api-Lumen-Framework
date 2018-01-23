@@ -126,6 +126,7 @@ GET：api/users
 
 token：eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDMvYXBpL2F1dGgvdG9rZW4iLCJpYXQiOjE1MTY0MzMyNjMsImV4cCI6MTUxNjQ0MDQ2MywibmJmIjoxNTE2NDMzMjYzLCJqdGkiOiJVcGFvRkxYQXRSY1lxRGRiIiwic3ViIjoxLCJwcnYiOiI4N2UwYWYxZWY5ZmQxNTgxMmZkZWM5NzE1M2ExNGUwYjA0NzU0NmFhIn0.1RAaVARi1qj1evvGxEiaCeP1Z-hDsBTRz2p1YLbC9GM
 ```
+由于这条路由在路由文件中加入了 `auth` 中间件的保护，所以需要附带 `token` 才能通过中间件获取到数据。
 
 ## 其他
 
@@ -138,6 +139,10 @@ token：eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjg
 ### 3. POSTMAN
 `route` 文件夹下 `Api_Lumen2.postman_collection.json` 是用 `postman` 导出的功能接口，可以导入 `postman` 具体查看
 
+### 4. 路由权限控制的逻辑
+以 `/users`为例，请求从通过规定的路由发出，通过三个中间件 `'auth', 'api.permission', 'api.timeslimit'` ，分别代表 `token` 的鉴定控制，api 访问权限的控制，用户剩余可调用次数的控制，全部通过后，连接到 `UserController` 控制器，控制器从数据库调用数据进行包装和响应的构建，响应构建后，'api.timescounter'作为后置中间件，进行 api 的调用记录。类似以下图这样的结构。
+
+![类似这样一个结构](http://osv9x79o9.bkt.clouddn.com/18-1-23/51826687.jpg)
 
 # V1.1.0
 以 `V1.0.0` 为基础的三翼业务接口。写有三翼通行证密码绑定和成绩查询两个示例接口。
@@ -162,6 +167,8 @@ php artisan db:seed --class=IdcodeSeeder
 
 方法 `eduLogin` 实现了教务登录，其中用 `sessionid` 实现了二次免登录。
 
+登录核心 `PassportCore` 调用验证码识别，登录成功后返回 `sessionid`。
+
 ### 3. 控制器
 
 #### 3.1 通行证绑定
@@ -178,6 +185,8 @@ edupd：*******
 ......     // 更多密码可选
 ```
 
+调用 `PassportCore` 确认密码的正确性，正确则加密入库绑定。
+
 #### 3.2. 成绩查询
 **\app\Http\Controllers\Passport\EduGradeController.php**
 
@@ -192,6 +201,7 @@ edupd：*******
 sessionid：上一次的sessionid（可选）
 ```
 
+调用 `PassportCore` 确认密码的正确性，正确则爬取页面进行匹配然后返回数据。
 
 # 后续版本Todo
 
