@@ -68,7 +68,7 @@ class PasswordController extends ApiController
                         foreach ($bindStatus as $key => $value) {
                             $bind_status .= $value.'#';
                         }
-                        $passportUser->bind_status = $bind_status;
+                        $passportUser->bind_status = substr($bind_status, 0, -2);
                         $passportUser->save();
                         // 存储绑定数据
                         if ($SysPortal = SysPortal::where('sid', '=', $request->sid)->first()) {

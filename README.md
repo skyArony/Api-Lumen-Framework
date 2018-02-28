@@ -60,7 +60,7 @@ JWT_SECRET=7tXjsx0Y4CjkF5kKYvPXu884qxuT1w9b     // 用php artisan jwt:secret生�
 ### 5. 填充几条测试数据 `php artisan make:seeder`
 这个命令会在 `users` 表中填充几条测试数据
 
-### 6. 简单调用示例
+### 6. api控制系统的使用
 权限分配的 E-R 图如下：
 
 ![ E-R 图](http://osv9x79o9.bkt.clouddn.com/18-1-16/68028673.jpg)
@@ -127,6 +127,12 @@ GET：api/users
 token：eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDMvYXBpL2F1dGgvdG9rZW4iLCJpYXQiOjE1MTY0MzMyNjMsImV4cCI6MTUxNjQ0MDQ2MywibmJmIjoxNTE2NDMzMjYzLCJqdGkiOiJVcGFvRkxYQXRSY1lxRGRiIiwic3ViIjoxLCJwcnYiOiI4N2UwYWYxZWY5ZmQxNTgxMmZkZWM5NzE1M2ExNGUwYjA0NzU0NmFhIn0.1RAaVARi1qj1evvGxEiaCeP1Z-hDsBTRz2p1YLbC9GM
 ```
 由于这条路由在路由文件中加入了 `auth` 中间件的保护，所以需要附带 `token` 才能通过中间件获取到数据。
+
+### 7. passport系统
+设置文件目录可读，用于存储临时验证码图片
+```
+\lumen\api\storage\app\idcodeTemp
+```
 
 ## 其他
 

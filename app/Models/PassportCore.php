@@ -34,12 +34,10 @@ class PassportCore extends Model
                 // 更新ip和时间
                 if ($passportUser = PassportUser::where('sid', '=', $request->sid)->first()) {
                     $passportUser->last_ip = $request->getClientIp();
-                    $passportUser->last_login_at = date('Y-m-d h:i:s', time());
                     $passportUser->save();
                 } else {
                     $passportUser = new PassportUser;
                     $passportUser->last_ip = $request->getClientIp();
-                    $passportUser->last_login_at = date('Y-m-d h:i:s', time());
                     $passportUser->save();
                 }
                 // 更新sessionID
@@ -97,12 +95,10 @@ class PassportCore extends Model
                     // 更新ip和时间
                     if ($passportUser = PassportUser::where('sid', '=', $request->sid)->first()) {
                         $passportUser->last_ip = $request->getClientIp();
-                        $passportUser->last_login_at = date('Y-m-d h:i:s', time());
                         $passportUser->save();
                     } else {
                         $passportUser = new PassportUser;
                         $passportUser->last_ip = $request->getClientIp();
-                        $passportUser->last_login_at = date('Y-m-d h:i:s', time());
                         $passportUser->save();
                     }
                     // 更新sessionID
@@ -119,12 +115,10 @@ class PassportCore extends Model
                 } elseif (preg_match('/修改密码/', $data)) {
                     if ($passportUser = PassportUser::where('sid', '=', $request->sid)->first()) {
                         $passportUser->last_ip = $request->getClientIp();
-                        $passportUser->last_login_at = date('Y-m-d h:i:s', time());
                         $passportUser->save();
                     } else {
                         $passportUser = new PassportUser;
                         $passportUser->last_ip = $request->getClientIp();
-                        $passportUser->last_login_at = date('Y-m-d h:i:s', time());
                         $passportUser->save();
                     }
                     if ($sessionid = Sessionid::where('sid', '=', $request->sid)->first()) {
@@ -140,12 +134,10 @@ class PassportCore extends Model
                 } elseif (preg_match('/修改电子邮箱/', $data)) {
                     if ($passportUser = PassportUser::where('sid', '=', $request->sid)->first()) {
                         $passportUser->last_ip = $request->getClientIp();
-                        $passportUser->last_login_at = date('Y-m-d h:i:s', time());
                         $passportUser->save();
                     } else {
                         $passportUser = new PassportUser;
                         $passportUser->last_ip = $request->getClientIp();
-                        $passportUser->last_login_at = date('Y-m-d h:i:s', time());
                         $passportUser->save();
                     }
                     if ($sessionid = Sessionid::where('sid', '=', $request->sid)->first()) {
@@ -213,12 +205,10 @@ class PassportCore extends Model
                 // 更新ip和时间
                 if ($passportUser = PassportUser::where('sid', '=', $request->sid)->first()) {
                     $passportUser->last_ip = $request->getClientIp();
-                    $passportUser->last_login_at = date('Y-m-d h:i:s', time());
                     $passportUser->save();
                 } else {
                     $passportUser = new PassportUser;
                     $passportUser->last_ip = $request->getClientIp();
-                    $passportUser->last_login_at = date('Y-m-d h:i:s', time());
                     $passportUser->save();
                 }
                 // 更新sessionID
@@ -235,12 +225,10 @@ class PassportCore extends Model
             } elseif (preg_match('/修改密码/', $data)) {
                 if ($passportUser = PassportUser::where('sid', '=', $request->sid)->first()) {
                     $passportUser->last_ip = $request->getClientIp();
-                    $passportUser->last_login_at = date('Y-m-d h:i:s', time());
                     $passportUser->save();
                 } else {
                     $passportUser = new PassportUser;
                     $passportUser->last_ip = $request->getClientIp();
-                    $passportUser->last_login_at = date('Y-m-d h:i:s', time());
                     $passportUser->save();
                 }
                 if ($sessionid = Sessionid::where('sid', '=', $request->sid)->first()) {
@@ -256,12 +244,10 @@ class PassportCore extends Model
             } elseif (preg_match('/修改电子邮箱/', $data)) {
                 if ($passportUser = PassportUser::where('sid', '=', $request->sid)->first()) {
                     $passportUser->last_ip = $request->getClientIp();
-                    $passportUser->last_login_at = date('Y-m-d h:i:s', time());
                     $passportUser->save();
                 } else {
                     $passportUser = new PassportUser;
                     $passportUser->last_ip = $request->getClientIp();
-                    $passportUser->last_login_at = date('Y-m-d h:i:s', time());
                     $passportUser->save();
                 }
                 if ($sessionid = Sessionid::where('sid', '=', $request->sid)->first()) {
@@ -308,12 +294,10 @@ class PassportCore extends Model
                 // 更新ip和时间
                 if ($passportUser = PassportUser::where('sid', '=', $request->sid)->first()) {
                     $passportUser->last_ip = $request->getClientIp();
-                    $passportUser->last_login_at = date('Y-m-d h:i:s', time());
                     $passportUser->save();
                 } else {
                     $passportUser = new PassportUser;
                     $passportUser->last_ip = $request->getClientIp();
-                    $passportUser->last_login_at = date('Y-m-d h:i:s', time());
                     $passportUser->save();
                 }
                 // 更新sessionID
@@ -357,12 +341,10 @@ class PassportCore extends Model
                     // 更新ip和时间
                     if ($passportUser = PassportUser::where('sid', '=', $request->sid)->first()) {
                         $passportUser->last_ip = $request->getClientIp();
-                        $passportUser->last_login_at = date('Y-m-d h:i:s', time());
                         $passportUser->save();
                     } else {
                         $passportUser = new PassportUser;
                         $passportUser->last_ip = $request->getClientIp();
-                        $passportUser->last_login_at = date('Y-m-d h:i:s', time());
                         $passportUser->save();
                     }
                     // 更新sessionID
@@ -416,12 +398,10 @@ class PassportCore extends Model
                 // 更新ip和时间
                 if ($passportUser = PassportUser::where('sid', '=', $request->sid)->first()) {
                     $passportUser->last_ip = $request->getClientIp();
-                    $passportUser->last_login_at = date('Y-m-d h:i:s', time());
                     $passportUser->save();
                 } else {
                     $passportUser = new PassportUser;
                     $passportUser->last_ip = $request->getClientIp();
-                    $passportUser->last_login_at = date('Y-m-d h:i:s', time());
                     $passportUser->save();
                 }
                 // 更新sessionID

@@ -80,6 +80,9 @@ class CreateApiSys extends Migration
             $table->string('item_key', 30)->comment('API唯一性key');
             $table->timestamp('use_time')->comment("接口调用时间");
             $table->string('email')->comment("调用者凭据");
+            $table->ipAddress('ip')->comment('请求者ip');
+            $table->string('host')->comment('请求者host');
+            $table->text('query_string')->comment('请求的查询字段');
             $table->integer('status')->comment("调用结果status");
             $table->integer('errcode')->comment("调用结果errcode");
             $table->string('errmsg', 100)->comment("调用结果errmsg");

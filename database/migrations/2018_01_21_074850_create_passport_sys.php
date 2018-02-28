@@ -21,7 +21,6 @@ class CreatePassportSys extends Migration
             $table->integer('status')->default(1)->comment('账号状态：1-正常；2-封禁；3-限制；具体请看定制的规则');
             $table->integer('type')->default(1)->comment('账号身份：1-学生老师大众；2-内部人员；3-开发人员；具体请看定制的规则');
             $table->ipAddress('last_ip')->comment('上次登录的IP地址');
-            $table->nullableTimestamps('last_login_at')->comment('上次登录的时间');
             $table->timestamps();
         });
 

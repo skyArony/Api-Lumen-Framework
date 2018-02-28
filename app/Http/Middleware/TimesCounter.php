@@ -32,6 +32,9 @@ class TimesCounter
         $apiRecord->errmsg = $response->original['errmsg'];
         $apiRecord->errcode = $response->original['errcode'];
         $apiRecord->status = $response->original['status'];
+        $apiRecord->ip = $request->ips()[0];
+        $apiRecord->host = $request->header('host');
+        $apiRecord->query_string = $request->getQueryString();
         $apiRecord->save();
 
         return $response;
