@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use Dingo\Api\Routing\Helpers;
 use Laravel\Lumen\Routing\Controller as BaseController;
 
+/* 
+ *  系统：api控制系统
+ *  功能：对返回的数据进行一层包装，加上了ErrMsg等信息
+ * 
+ */
 class ApiController extends BaseController
 {
     use Helpers;

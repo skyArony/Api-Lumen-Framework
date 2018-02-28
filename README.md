@@ -178,7 +178,7 @@ php artisan db:seed --class=IdcodeSeeder
 
 路由：
 ```
-GET：password/bind
+POST：password/bind
 
 sid：2015551509
 edupd：*******

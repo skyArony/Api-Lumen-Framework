@@ -67,7 +67,9 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers'], function ($api) {
   $api->patch('/perm/left-times', 'PermController@setLeftTimes');
 });
 
+/* 统一登录系统 */
 $api->version('v1', ['namespace' => 'App\Http\Controllers\Passport'], function ($api) {
   $api->post('/password/bind', 'PasswordController@bindPassword');   //  密码绑定
   $api->get('/edu/grade/{term}', 'EduGradeController@getGrade');
+  $api->post('/login', 'LoginController@login');  // 系统登录
 });

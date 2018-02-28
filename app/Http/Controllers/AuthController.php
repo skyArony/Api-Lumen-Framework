@@ -7,6 +7,11 @@ use Illuminate\Support\Facades\Auth;
 use App\User;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
+/* 
+ *  系统：api控制系统
+ *  功能：JWT token的控制和维护
+ * 
+ */
 class AuthController extends ApiController
 {
   /**

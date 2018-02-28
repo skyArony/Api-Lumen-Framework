@@ -11,6 +11,11 @@ use App\Models\DB\api_lumen\CollectionUser;
 use App\Models\DB\api_lumen\GroupItem;
 use App\Models\DB\api_lumen\User;
 
+/* 
+ *  系统：api控制系统
+ *  功能：api四种关系的之间的联系的增删改查，用此关系维护api的权限分配
+ * 
+ */
 class PermController extends ApiController
 {
     // item:增  必需'key', 'url', 'method', 'intro'   数据创建成功一般来说顺便把刚刚创建的数据返回了

@@ -8,6 +8,11 @@ use App\Models\DB\api_lumen\ApiRecord;
 use App\Models\DB\api_lumen\ApiItem;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
+/* 
+ *  系统：api控制系统
+ *  功能：后置中间件：记录api的调用信息，留作日志
+ * 
+ */
 class TimesCounter
 {
     public function handle($request, Closure $next)

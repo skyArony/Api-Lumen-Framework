@@ -17,6 +17,7 @@ class CreatePassportSys extends Migration
         Schema::connection('mysql-passport')->create('passport_users', function (Blueprint $table) {
             $table->increments('id');
             $table->string('sid')->unique()->comment('学号');
+            $table->string('bind_status')->comment('各个系统的绑定状态,1表示绑定,0表示没有绑定,用#分隔，顺序：一卡通、教务、图书馆、信息门户、报修、qq（以后可以自行补充，但不要修改顺序）');
             $table->integer('status')->default(1)->comment('账号状态：1-正常；2-封禁；3-限制；具体请看定制的规则');
             $table->integer('type')->default(1)->comment('账号身份：1-学生老师大众；2-内部人员；3-开发人员；具体请看定制的规则');
             $table->ipAddress('last_ip')->comment('上次登录的IP地址');

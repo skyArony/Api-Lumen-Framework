@@ -16,9 +16,9 @@ class SysPortal extends Model
      *
      * @var array
      */
-    protected $dispatchesEvents = [
-        'created' => SysPortalCreated::class,    // 填充passport_user_infos表中的信息
-    ];
+    // protected $dispatchesEvents = [
+    //     'created' => SysPortalCreated::class,    // 填充passport_user_infos表中的信息
+    // ];
 
     // 可更改字段的白名单
     // protected $fillable = ['item_key'];

@@ -5,6 +5,11 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Contracts\Auth\Factory as Auth;
 
+/* 
+ *  系统：api控制系统
+ *  功能：前置中间件，对于进入的请求判断其是否具有权限
+ * 
+ */
 class Authenticate
 {
     /**

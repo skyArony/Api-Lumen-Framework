@@ -11,6 +11,11 @@ use App\Models\DB\api_lumen\ApiItem;
 use App\Http\Controllers\ApiController;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
+/* 
+ *  系统：api控制系统
+ *  功能：前置中间件：对进入的请求判断其权限
+ * 
+ */
 class Permissions
 {
     /**

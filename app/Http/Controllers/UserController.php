@@ -5,7 +5,11 @@ use App\Models\DB\api_lumen\User;
 use App\Http\Transformers\UserTransformer;
 use Illuminate\Http\Request;
 
-
+/* 
+ *  系统：api控制系统
+ *  功能：列出api控制系统中的用户。用作接口功能的展示。
+ * 
+ */
 class UserController extends ApiController
 {
   // 返回所有的user

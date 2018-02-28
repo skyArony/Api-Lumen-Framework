@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 use App\Models\PassportCore;
 use App\Http\Controllers\ApiController;
 
+/* 
+ *  系统：统一登录系统
+ *  功能：查成绩
+ * 
+ */
 class EduGradeController extends ApiController
 {
     // 获取成绩
