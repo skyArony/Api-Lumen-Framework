@@ -76,6 +76,7 @@ class PassportCore extends Model
                 $passportUser->save();
             } else {
                 $passportUser = new PassportUser;
+                $passportUser->sid = $request->sid;
                 $passportUser->last_ip = $request->getClientIp();
                 $passportUser->save();
             }
@@ -107,6 +108,7 @@ class PassportCore extends Model
                 $passportUser->save();
             } else {
                 $passportUser = new PassportUser;
+                $passportUser->sid = $request->sid;
                 $passportUser->last_ip = $request->getClientIp();
                 $passportUser->save();
             }
@@ -138,6 +140,7 @@ class PassportCore extends Model
                 $passportUser->save();
             } else {
                 $passportUser = new PassportUser;
+                $passportUser->sid = $request->sid;
                 $passportUser->last_ip = $request->getClientIp();
                 $passportUser->save();
             }
@@ -212,6 +215,7 @@ class PassportCore extends Model
                 $passportUser->save();
             } else {
                 $passportUser = new PassportUser;
+                $passportUser->sid = $request->sid;
                 $passportUser->last_ip = $request->getClientIp();
                 $passportUser->save();
             }
@@ -277,6 +281,7 @@ class PassportCore extends Model
                     $passportUser->save();
                 } else {
                     $passportUser = new PassportUser;
+                    $passportUser->sid = $request->sid;
                     $passportUser->last_ip = $request->getClientIp();
                     $passportUser->save();
                 }
@@ -342,6 +347,7 @@ class PassportCore extends Model
                         $passportUser->save();
                     } else {
                         $passportUser = new PassportUser;
+                        $passportUser->sid = $request->sid;
                         $passportUser->last_ip = $request->getClientIp();
                         $passportUser->save();
                     }
@@ -362,6 +368,7 @@ class PassportCore extends Model
                         $passportUser->save();
                     } else {
                         $passportUser = new PassportUser;
+                        $passportUser->sid = $request->sid;
                         $passportUser->last_ip = $request->getClientIp();
                         $passportUser->save();
                     }
@@ -381,6 +388,7 @@ class PassportCore extends Model
                         $passportUser->save();
                     } else {
                         $passportUser = new PassportUser;
+                        $passportUser->sid = $request->sid;
                         $passportUser->last_ip = $request->getClientIp();
                         $passportUser->save();
                     }
@@ -456,6 +464,7 @@ class PassportCore extends Model
                     $passportUser->save();
                 } else {
                     $passportUser = new PassportUser;
+                    $passportUser->sid = $request->sid;
                     $passportUser->last_ip = $request->getClientIp();
                     $passportUser->save();
                 }
@@ -476,6 +485,7 @@ class PassportCore extends Model
                     $passportUser->save();
                 } else {
                     $passportUser = new PassportUser;
+                    $passportUser->sid = $request->sid;
                     $passportUser->last_ip = $request->getClientIp();
                     $passportUser->save();
                 }
@@ -495,6 +505,7 @@ class PassportCore extends Model
                     $passportUser->save();
                 } else {
                     $passportUser = new PassportUser;
+                    $passportUser->sid = $request->sid;
                     $passportUser->last_ip = $request->getClientIp();
                     $passportUser->save();
                 }
@@ -542,6 +553,7 @@ class PassportCore extends Model
                     $passportUser->save();
                 } else {
                     $passportUser = new PassportUser;
+                    $passportUser->sid = $request->sid;
                     $passportUser->last_ip = $request->getClientIp();
                     $passportUser->save();
                 }
@@ -597,6 +609,7 @@ class PassportCore extends Model
                         $passportUser->save();
                     } else {
                         $passportUser = new PassportUser;
+                        $passportUser->sid = $request->sid;
                         $passportUser->last_ip = $request->getClientIp();
                         $passportUser->save();
                     }
@@ -662,6 +675,7 @@ class PassportCore extends Model
                     $passportUser->save();
                 } else {
                     $passportUser = new PassportUser;
+                    $passportUser->sid = $request->sid;
                     $passportUser->last_ip = $request->getClientIp();
                     $passportUser->save();
                 }

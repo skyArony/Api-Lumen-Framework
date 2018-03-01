@@ -221,6 +221,8 @@ token：eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjg
 php artisan db:seed --class=IdcodeSeeder
 ```
 
+在 **/storage/app** 目录下新建 `idcodeTemp` 文件夹，把 **storage/** 目录都设置对应的可写权限。
+
 ## 二、如何使用
 
 ### 1. 绑定通行证
