@@ -69,7 +69,8 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers'], function ($api) {
 
 /* 统一登录系统 */
 $api->version('v1', ['namespace' => 'App\Http\Controllers\Passport'], function ($api) {
-  $api->post('/password/bind', 'PasswordController@bindPassword');   //  密码绑定
+  $api->post('/password/bind', 'BindController@bindPassword');   //  密码绑定
   $api->get('/edu/grade/{term}', 'EduGradeController@getGrade');
-  $api->post('/login', 'LoginController@login');  // 系统登录
+  $api->get('/login', 'LoginController@login');  // 系统登录
+  $api->post('/test', 'LoginController@test');  // 系统登录
 });

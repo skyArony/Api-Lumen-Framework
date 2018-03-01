@@ -5,12 +5,13 @@ namespace App\Http\Controllers\Passport;
 use App\Libs\Snoopy;
 use Illuminate\Http\Request;
 use App\Models\PassportCore;
+use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Controllers\ApiController;
 
-/* 
+/*
  *  系统：统一登录系统
  *  功能：查成绩
- * 
+ *
  */
 class EduGradeController extends ApiController
 {
@@ -19,9 +20,14 @@ class EduGradeController extends ApiController
     {
         $gradeData_url = "http://jwxt.xtu.edu.cn/jsxsd/kscj/cjcx_list";
         $termCode_url = "http://jwxt.xtu.edu.cn/jsxsd/kscj/cjcx_query";
+
         $snoopy = new Snoopy;
 
-        if ($request->has("sid", "edupd")) {
+        // token 两个作用，一个是确保拥有访问本api的权限，一是附带了sid信息
+        if ($request->has("token")) {
+            // 从token中获取sid
+            $payload = json_decode(base64_decode(explode('.', $request->token)[1]), 1);
+            $request->sid = $payload['sid'];
             /* 学期代码数组 */
             $startTerm = (int)(substr($request->sid, 0, 4));
             $allTerms = array('占位');
@@ -34,7 +40,7 @@ class EduGradeController extends ApiController
             
             /* 查询所有成绩 */
             $array = PassportCore::eduLogin($request);
-            if ($array['code'] >= 0 && $array['sid'] == $request->sid) {
+            if ($array['code'] >= 0) {
                 $snoopy->cookies = $array['cookies'];
                 $snoopy->fetch($gradeData_url);
                 if ($snoopy->status != 200) {
@@ -122,7 +128,7 @@ class EduGradeController extends ApiController
                 }
                 $studentData[$i-1]['isPass']                  = $isPass;
             }
-            return $this->createResponse(json_encode($studentData, JSON_UNESCAPED_UNICODE), 200, 0, $snoopy->cookies['JSESSIONID']);
+            return $this->createResponse(json_encode($studentData, JSON_UNESCAPED_UNICODE), 200, 0);
         } else {
             return $this->createResponse(null, 400, -65535);
         }

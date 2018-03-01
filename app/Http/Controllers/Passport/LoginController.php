@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\PassportCore;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Controllers\ApiController;
-use App\Http\Controllers\Passport\PasswordController;
+use App\Http\Controllers\Passport\BindController;
 
 /*
  *  系统：统一登录系统
@@ -33,11 +33,10 @@ class LoginController extends ApiController
                     // 学号方式，先尝试信息门户portalpd，再尝试教务系统edupd
                     if ($request->has('password')) {
                         // 尝试信息门户
-                        $request->portalpd = $request->password;
-                        $array = PassportCore::portalLogin($request);
+                        $array = PassportCore::portalCheck($request);
                         if ($array['code'] >= 0 && $array['sid'] == $request->sid) {
                             // 获取绑定状态
-                            $bindStatus = PasswordController::getBindStatus($request->sid);
+                            $bindStatus = BindController::getBindStatus($request->sid);
                             // 构造token并返回
                             $credentials = array('email' => $request->signemail,
                                                  'password' => $request->signpassword);
@@ -53,11 +52,10 @@ class LoginController extends ApiController
                             return response()->json(['errmsg' => 'Unauthorized'], 401);
                         } else {
                             // 密码错误,尝试教务
-                            $request->edupd = $request->password;
-                            $array = PassportCore::eduLogin($request);
+                            $array = PassportCore::eduCheck($request);
                             if ($array['code'] >= 0 && $array['sid'] == $request->sid) {
                                 // 获取绑定状态
-                                $bindStatus = PasswordController::getBindStatus($request->sid);
+                                $bindStatus = BindController::getBindStatus($request->sid);
                                 // 构造token并返回
                                 $credentials = array('email' => $request->signemail,
                                                      'password' => $request->signpassword);
@@ -89,5 +87,9 @@ class LoginController extends ApiController
         }
     }
 
+    public function test(Request $request)
+    {
+        PassportCore::portalCheck($request);
+    }
 
 }

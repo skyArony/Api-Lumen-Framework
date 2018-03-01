@@ -1,30 +1,41 @@
-`Api-Lumen-Framework` 是一个用 `Lumen` 框架构建的**底层api基础框架**，你可以基于此框架快速构建你的api。
+# 介绍
+**Api-Lumen-Framework** 是一个用 **Lumen** 框架构建的**底层api基础框架**，你可以基于此框架快速构建你的 api。
 
-# V1.0.0
-基本框架。
+后面的版本是搭建在前面的版本基础上的，例如 **V1.0** 仅有 **Api控制系统** ，**V1.1** 则是在前面的基础上再搭建了一个 **passport统一登录系统**。
 
-## 用到的框架及其版本
+# V1.0.0 (api 控制系统)
+基本底层框架，实现了一个可以对api进行设定和权限分配的系统。
+
+## 一、环境和功能介绍
+
+#### 用到的框架及其版本
 - Lumen v5.5
 - dingo v2.0.0-alpha1
 - JWT v1.0.0-rc.1
 
-## 功能
+#### 功能
 - JWT 权限认证
 - 灵活的权限控制
 - api 调用统计
 - api 调用速率限制
 
-## 环境要求
+#### 环境要求
 - composer
 - git
 
-## 如何开始
-### 1. 下载框架到本地
+## 二、如何开始
 
-### 2. 执行 `composer update`
+### 1. 下载到本地
+执行 `git clone` 下载到本地。
 
-### 3. 在根目录新建你的 `.env` 文件
+### 2. 更新 composer 包
+执行 `composer update` ，更新 composer 包。
+
+### 3. 新建配置文件
+在根目录新建你的 `.env` 文件
+
 **.env 示例文件**
+
 ```
 APP_ENV=local
 APP_DEBUG=true          // 生产环境设置为false
@@ -54,30 +65,82 @@ API_DEBUG=true          // 调试模式
 JWT_SECRET=7tXjsx0Y4CjkF5kKYvPXu884qxuT1w9b     // 用php artisan jwt:secret生成
 ```
 
-### 4. 运行数据库迁移 `composer dump-autoload` `php artisan migrate`
-运行数据库迁移之前，先在数据库建立 `api_lumen` 和 `passport` 两个数据库。
+### 4. 运行数据库迁移 
+运行数据库迁移之前，先在数据库建立 `api_lumen` 和 `passport` 两个数据库，然后
 
-### 5. 填充几条测试数据 `php artisan make:seeder`
-这个命令会在 `users` 表中填充几条测试数据
+```
+php artisan migrate     // 运行迁移生成数据表
+```
 
-### 6. api控制系统的使用
-权限分配的 E-R 图如下：
+### 5. 填充几条测试数据
+这个命令会在 `users` 表中填充一条测试数据，每运行一次填充一条。
+
+```
+composer dump-autoload  // 重新生成composer的自动加载器
+
+php artisan db:seed // 填充一条测试数据（user），运行一次填充一条
+```
+
+## 三、如何使用
+
+### 1. 数据库表结构大致如下：
+**权限分配**的 E-R 图如下：
 
 ![ E-R 图](http://osv9x79o9.bkt.clouddn.com/18-1-16/68028673.jpg)
 
-#### 6.1 权限分配路由暂未设置认证保护，你可以后面自己加入保护中
+- items 中是一条一条的 API
+- groups 中是一个一个 API 组，每个组可以包含任意条 API
+- collections 中是一个一个的 API 集合，每个集合可以包含任意条 API 和任意个 groups
+- users 是这个系统的用户（开发者、系统等），每个用户可以用有任意个 API 集合，即拥有集合中 API 的使用权限
 
-#### 6.2  先把要访问 `api` 加入 `api_items` 表中，注册 `api`
+操纵以上关系的路由是**权限分配路由**，为了方便暂未将其加入路由保护。
+
+### 2. 设定路由
+在 **\routes\web.php** 中设定你的路由：
+
+```php
+$api->version('v1', ['namespace' => 'App\Http\Controllers'], function ($api) {
+  // 认证部分：获取token
+  $api->get('/auth/token', 'AuthController@createToken');
+  // 认证部分：刷新token
+  $api->patch('/auth/token', 'AuthController@refreshToken');
+  // 认证部分：删除token
+  $api->delete('/auth/token', 'AuthController@deleteToken');
+
+  // jwt-auth的路由保护，放在这里面的就需要带上token访问，否则可以绕过权限直接访问
+  $api->group(['middleware' => ['auth', 'api.permission', 'api.timeslimit', 'api.timescounter']], function ($api) {
+      // 资源获取：users
+      $api->resource('/users', 'UserController');
+  });
+});
+```
+**权限分配路由**暂未设置认证保护，你可以后面自己加入保护中。
+
+### 3. 获取一个 token
+用前面 `seed` 生成的 `User` 来获取一个 `token`。
+
+```
+GET：/auth/token
+
+email：xxxx@gmail.com
+password：secret （填充的测试数据，这里默认为secret）
+```
+
+### 4. 注册 API （这个是一个权限分配路由，后面类似的略）
+用以下这条路由注册一条 API
+
 ```
 POST：/perm/item
 
 key：USRE-GetAllUser
-intro：获去所有的用户
+intro：获取所有的用户
 url：http://127.0.0.1:8003/api/users
 method：GET
+[token：在你把这条路由加入保护后，你需要输入这个 token 参数才能正常使用这条路由]
 ```
 
-#### 6.3 创建一个 `collection`
+### 5. 创建一个 Collection
+
 ```
 POST：/perm/collection
 
@@ -86,128 +149,131 @@ intro：第一个测试集合
 istemp：boolean （可选，默认true）
 ```
 
-#### 6.4 分配刚刚注册的 `api` 到 `collection`
-```
-POST：perm/contact
+### 6. 分配刚刚注册的 API 到 Collection
 
-type：ci             // 可选 ci、cu、cg、gi，分别表示建立 collection 和 item，collection 和 user(email)， colletion 和 group，group 和 item 的联系
-container：Collection-1（collection_key）
-element：["USRE-GetAllUser"] （json数组）
+```
+POST：/perm/contact
+
+container：Collection-1
+element：["USRE-GetAllUser"]  // json数组
+type：ci   // 可选 ci、cu、cg、gi，分别表示建立 collection 和 item，collection 和 user(email)， colletion 和 group，group 和 item 的联系
 ```
 
-#### 6.5 把 `collection` 分配给 `user`
+### 7. 把 Collection 分配给 User
+
 ```
-POST: perm/contact
+POST: /perm/contact
 
 type：cu
 container：Collection-1
 element：["xxxx@gmail.com"] 
 ```
 
-#### 6.6 设置用户的接口可调用次数
+### 8. 设置用户的接口可调用次数
+
 ```
-PATCH：perm/left-times
+PATCH：/perm/left-times
 
 email：xxxx@gmail.com
 times：1000
 ```
 
-#### 6.7 获取 `token`
-```
-GET：auth/token
+### 9. 附带 token 访问数据
 
-email：xxxx@gmail.com
-password：secret （填充测试数据时，这里默认为secret）
 ```
-
-#### 6.8 附带 `token` 访问数据
-```
-GET：api/users
+GET：/users
 
 token：eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDMvYXBpL2F1dGgvdG9rZW4iLCJpYXQiOjE1MTY0MzMyNjMsImV4cCI6MTUxNjQ0MDQ2MywibmJmIjoxNTE2NDMzMjYzLCJqdGkiOiJVcGFvRkxYQXRSY1lxRGRiIiwic3ViIjoxLCJwcnYiOiI4N2UwYWYxZWY5ZmQxNTgxMmZkZWM5NzE1M2ExNGUwYjA0NzU0NmFhIn0.1RAaVARi1qj1evvGxEiaCeP1Z-hDsBTRz2p1YLbC9GM
 ```
+
 由于这条路由在路由文件中加入了 `auth` 中间件的保护，所以需要附带 `token` 才能通过中间件获取到数据。
 
-### 7. passport系统
-设置文件目录可读，用于存储临时验证码图片
-```
-\lumen\api\storage\app\idcodeTemp
-```
 
-## 其他
+## 四、其他
 
-### 1. `token` 的设置（有效时间，刷新时间，宽限时间）
+### 1. token 的设置（有效时间，刷新时间，宽限时间）
 `config/jwt.php`
 
-### 2. 客户端如何维护 `token`
+### 2. 客户端如何维护 token
 `token` 的第二段 `base64` 解码可得到有效时间，在过期时 `PATCH` 请求 `/auth/token` 更新 `token`。
 
 ### 3. POSTMAN
-`route` 文件夹下 `Api_Lumen2.postman_collection.json` 是用 `postman` 导出的功能接口，可以导入 `postman` 具体查看
+`route` 文件夹下 `Api_Lumen2.postman_collection.json` 有已经设置好的接口配置，可以导入 `postman` 具体查看。
 
 ### 4. 路由权限控制的逻辑
-以 `/users`为例，请求从通过规定的路由发出，通过三个中间件 `'auth', 'api.permission', 'api.timeslimit'` ，分别代表 `token` 的鉴定控制，api 访问权限的控制，用户剩余可调用次数的控制，全部通过后，连接到 `UserController` 控制器，控制器从数据库调用数据进行包装和响应的构建，响应构建后，'api.timescounter'作为后置中间件，进行 api 的调用记录。类似以下图这样的结构。
+以 `/users`为例，请求从通过规定的路由发出，通过三个中间件 `auth` `api.permission` `api.timeslimit` ，分别代表 `token` 的鉴定控制，api 访问权限的控制，用户剩余可调用次数的控制，全部通过后，连接到 `UserController` 控制器，控制器从数据库调用数据进行包装和响应的构建，响应构建后，`api.timescounter` 作为后置中间件，记录 api 的调用日志。类似以下图这样的结构。
 
 ![类似这样一个结构](http://osv9x79o9.bkt.clouddn.com/18-1-23/51826687.jpg)
 
-# V1.1.0
-以 `V1.0.0` 为基础的三翼业务接口。写有三翼通行证密码绑定和成绩查询两个示例接口。
+---
 
-## 新增
+# V1.1.0 (passport 统一登录系统)
+以 `V1.0.0` 为基础实现了 **passport** 统一登录系统。写有三翼通行证登录、密码绑定和成绩查询几个示例接口。
 
-### 1. 教务系统和信息门户的验证码数据，可通过 `seeder` 自动填充到数据库
-运行以下这句，填充验证码识别数据到数据库
+## 一、如何开始
+
+### 1. 按步骤执行 **V1.0** 版本中 **如何开始** 的前五个小点
+
+### 2. 通过 seed 填充数据到数据库
+运行以下这句，填充教务系统和信息门户验证码识别数据到数据库：
+
 ```
 php artisan db:seed --class=IdcodeSeeder
 ```
 
-### 2. 模型
+## 二、如何使用
 
-#### 2.1 验证码识别模型
-**\app\Models\Idcode.php**
+### 1. 绑定通行证
+**文件：** \app\Http\Controllers\Passport\BindController.php
+**方法：** bindPassword()
+**路由：**
 
-方法 `EduIdcode` 实现了教务验证码识别。
-
-#### 2.2 登录核心
-**\app\Models\PassportCore.php**
-
-方法 `eduLogin` 实现了教务登录，其中用 `sessionid` 实现了二次免登录。
-
-登录核心 `PassportCore` 调用验证码识别，登录成功后返回 `sessionid`。
-
-### 3. 控制器
-
-#### 3.1 通行证绑定
-**\app\Http\Controllers\Passport\PasswordController.php**
-
-方法 `bindPassword` 实现了各系统的密码绑定，现只有教务。
-
-路由：
 ```
-POST：password/bind
+POST：/password/bind
 
 sid：2015551509
 edupd：*******
-......     // 更多密码可选
+portalpd: *******     // 更多密码可选
 ```
 
-调用 `PassportCore` 确认密码的正确性，正确则加密入库绑定。
+**处理逻辑：** 得到账号密码后会用模型 `PassportCore` 中对应的方法对检验密码的正确性，正确则加密保存、保存此次 session 、记录登录时间，最后返回绑定结果。
 
-#### 3.2. 成绩查询
-**\app\Http\Controllers\Passport\EduGradeController.php**
+### 2. 登录
+**文件：** \app\Http\Controllers\Passport\LoginController.php
+**方法：** login()
+**路由：**
 
-方法 `getGrade` 实现了成绩查询。
-
-路由：
 ```
-GET：edu/grade/{term}        // term为0时，表示最近的学期，1-8是表示选择的学期（未读过的学期返回404），all表示所有成绩，其他返回参数错误
+GET：/login
 
 sid：2015551509
-edupd：*******
-sessionid：上一次的sessionid（可选）
+password：*******
+signemail：xxxx@gmail.com   // 开发者或系统所持有的 key
+signpassword：secret
+type：sid   // 登录方式，sid 表示教务或信息门户都可以，此外还有 tel、qq、weixin 等
 ```
 
-调用 `PassportCore` 确认密码的正确性，正确则爬取页面进行匹配然后返回数据。
+**处理逻辑：** 得到账号密码后会用模型 `PassportCore` 中对应的方法对检验密码的正确性，正确则加密保存、保存此次 session 、记录登录时间，最后返回一个  **token**，其中含有 **sid** 信息以及 **bindStatus** 信息，同时 **token** 还充当着权限判断的作用。
+**bindStatus：**各个系统的绑定状态,1表示绑定,0表示没有绑定,用#分隔，顺序：一卡通、教务、图书馆、信息门户、报修、qq（以后可以自行补充，但不要修改顺序），例如： **0#1#0#1#0#0#0#**
+
+### 3. 成绩查询
+**文件：** \app\Http\Controllers\Passport\EduGradeController.php
+**方法：** getGrade()
+**路由：**
+
+```
+// term为0时，表示最近的学期，1-8是表示选择的学期（未读过的学期返回404），all表示所有成绩，其他返回参数错误
+GET：/edu/grade/{term}  
+
+token：XXXX.YYYY.ZZZZ
+```
+
+**处理逻辑：** **token** 分别经过中间件的有效判断、权限判断、可调用次数判断后会传入，然后解析得到 **sid** ，用 **sid** 首先看数据库中有没有 可用的 **sessionid**，有则直接利用然后爬取成绩，没有则直接获取加密密码解密，然后爬取数据。
+
+## 三、其他
+### 1. 验证码识别的实现
+**文件：**\app\Models\Idcode.php
+
 
 # 后续版本Todo
 
@@ -221,7 +287,7 @@ sessionid：上一次的sessionid（可选）
 
 ### 2. 三翼通行证 ———— passport （对应表）
 - `PasswordController` 基础上完善更多系统的密码绑定，数据返回格式样例中已经比较详细
-- 实现教务和信息门户其中任意一个密码就可以登录通行证
+- 实现教务和信息门户其中任意一个密码就可以登录通行证（已完成）
 
 ### 3. 教务系统 & 信息门户 & 一卡通 & 图书馆 & 报修
 - 完善以上系统所有接口，系统功能重合部分要实现代码复用。
@@ -261,5 +327,10 @@ sessionid：上一次的sessionid（可选）
 - [慕课-Laravel 入门](https://www.imooc.com/learn/697)
 - [我的博客](http://blog.yfree.cc)
 - [codecasts](https://www.codecasts.com/)
+
+
+
+
+
 
 

@@ -21,7 +21,7 @@ class ApiController extends BaseController
     public $debug = '未调试';
 
     // 构造响应基本框架
-    public  function createResponse($data, $status, $errcode, $sessionid = null)
+    public  function createResponse($data, $status, $errcode)
     {
         // 设置 errMsg
         $this->__setErrMsg($errcode);
@@ -29,7 +29,6 @@ class ApiController extends BaseController
             'errcode' => $errcode,
             'status' => $status,
             'errmsg' => $this->errmsg,
-            'sessionid' => $sessionid,
             'header' => $this->header,
             'debug' => $this->debug,
             'data' => $data
@@ -58,7 +57,7 @@ class ApiController extends BaseController
             2 => '成功(未绑定邮箱) 请前往教务系统绑定邮箱 ：http://jwxt.xtu.edu.cn/jsxsd/',
             3 => '删除了不存在的数据',
             -1 => '网络故障',
-            -2 => '未知错误',
+            -2 => '未知错误或系统bug',
             -3 => '验证码错误',
             -4 => '用户名或密码错误',
             -5 => 'HTTP错误',

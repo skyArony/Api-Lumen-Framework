@@ -8,14 +8,13 @@ use App\Http\Controllers\ApiController;
 use App\Models\DB\passport\SysEdu;
 use App\Models\DB\passport\SysPortal;
 use App\Models\DB\passport\PassportUser;
-use Illuminate\Support\Facades\Crypt;
 
 /* 
  *  系统：统一登录系统
  *  功能：绑定通行证
  * 
  */
-class PasswordController extends ApiController
+class BindController extends ApiController
 {
     // 绑定密码
     public function bindPassword(Request $request)
@@ -27,7 +26,8 @@ class PasswordController extends ApiController
                 $bindRes = array(); // 绑定结果
                 // 输入了教务密码，且教务密码正确则入库绑定，否则设置false
                 if ($request->has('edupd')) {
-                    $array = PassportCore::eduLogin($request);
+                    $request->password = $request->edupd;
+                    $array = PassportCore::eduCheck($request);
                     if ($array['code'] >= 0 && $array['sid'] == $request->sid) {
                         // 修改bind_status字段
                         $passportUser = PassportUser::where('sid', '=', $request->sid)->first();
@@ -39,16 +39,7 @@ class PasswordController extends ApiController
                         }
                         $passportUser->bind_status = $bind_status;
                         $passportUser->save();
-                        // 存储绑定数据
-                        if ($sysEdu = SysEdu::where('sid', '=', $request->sid)->first()) {
-                            $sysEdu->password = Crypt::encrypt($request->edupd);  // 加密
-                            $sysEdu->save();
-                        } else {
-                            $sysEdu = new SysEdu;
-                            $sysEdu->sid = $request->sid;
-                            $sysEdu->password = Crypt::encrypt($request->edupd);  // 加密
-                            $sysEdu->save();
-                        }
+                        // 记录绑定结果
                         $bindRes['edu']['status'] = true;
                         $bindRes['edu']['code'] = $array['code'];
                     } else {
@@ -58,7 +49,8 @@ class PasswordController extends ApiController
                 }
                 // 信息门户密码的绑定
                 if ($request->has('portalpd')) {
-                    $array = PassportCore::portalLogin($request);
+                    $request->password = $request->portalpd;
+                    $array = PassportCore::portalCheck($request);
                     if ($array['code'] >= 0 && $array['sid'] == $request->sid) {
                         // 修改bind_status字段
                         $passportUser = PassportUser::where('sid', '=', $request->sid)->first();
@@ -70,16 +62,7 @@ class PasswordController extends ApiController
                         }
                         $passportUser->bind_status = substr($bind_status, 0, -2);
                         $passportUser->save();
-                        // 存储绑定数据
-                        if ($SysPortal = SysPortal::where('sid', '=', $request->sid)->first()) {
-                            $SysPortal->password = Crypt::encrypt($request->portalpd);  // 加密
-                            $SysPortal->save();
-                        } else {
-                            $SysPortal = new SysPortal;
-                            $SysPortal->sid = $request->sid;
-                            $SysPortal->password = Crypt::encrypt($request->portalpd);  // 加密
-                            $SysPortal->save();
-                        }
+                        // 记录绑定结果                        
                         $bindRes['portal']['status'] = true;
                         $bindRes['portal']['code'] = $array['code'];
                     } else {
