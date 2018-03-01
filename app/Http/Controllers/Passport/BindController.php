@@ -28,6 +28,8 @@ class BindController extends ApiController
                 if ($request->has('edupd')) {
                     $request->password = $request->edupd;
                     $array = PassportCore::eduCheck($request);
+                    // 设定绑定状态
+                    self::getBindStatus($request->sid);
                     if ($array['code'] >= 0 && $array['sid'] == $request->sid) {
                         // 修改bind_status字段
                         $passportUser = PassportUser::where('sid', '=', $request->sid)->first();
@@ -51,6 +53,8 @@ class BindController extends ApiController
                 if ($request->has('portalpd')) {
                     $request->password = $request->portalpd;
                     $array = PassportCore::portalCheck($request);
+                    // 设定绑定状态
+                    self::getBindStatus($request->sid);
                     if ($array['code'] >= 0 && $array['sid'] == $request->sid) {
                         // 修改bind_status字段
                         $passportUser = PassportUser::where('sid', '=', $request->sid)->first();
