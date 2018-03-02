@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use Dingo\Api\Routing\Helpers;
 use Laravel\Lumen\Routing\Controller as BaseController;
 
-/* 
+/*
  *  系统：api控制系统
  *  功能：对返回的数据进行一层包装，加上了ErrMsg等信息
- * 
+ *
  */
 class ApiController extends BaseController
 {
@@ -21,7 +21,7 @@ class ApiController extends BaseController
     public $debug = '未调试';
 
     // 构造响应基本框架
-    public  function createResponse($data, $status, $errcode)
+    public function createResponse($data, $status, $errcode)
     {
         // 设置 errMsg
         $this->__setErrMsg($errcode);
@@ -65,10 +65,18 @@ class ApiController extends BaseController
             -7 => '更新不存在的数据，导致失败',
             -8 => '数据不存在',
             -9 => '越权限操作',
-            -10 => '账户可调用次数不足',
+            -10 => '账户可调用次数不足或不在授权期',
             -11 => '数据不存在',
             -65535 => '参数错误'
         );
         $this->errmsg = $msgForCode[$errcode];
+    }
+
+    // 解析路由路径中的参数
+    public function route_parameter($name, $default = null)
+    {
+        $routeInfo = app('request')->route();
+    
+        return array_get($routeInfo[2], $name, $default);
     }
 }

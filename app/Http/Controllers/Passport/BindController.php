@@ -39,7 +39,7 @@ class BindController extends ApiController
                         foreach ($bindStatus as $key => $value) {
                             $bind_status .= $value.'#';
                         }
-                        $passportUser->bind_status = $bind_status;
+                        $passportUser->bind_status = substr($bind_status, 0, -2);
                         $passportUser->save();
                         // 记录绑定结果
                         $bindRes['edu']['status'] = true;

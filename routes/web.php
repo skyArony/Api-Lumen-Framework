@@ -25,7 +25,7 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers'], function ($api) {
   // 认证部分：获取token
   $api->get('/auth/token', 'AuthController@createToken');
   // 认证部分：刷新token
-  $api->patch('/auth/token', 'AuthController@refreshToken');
+  $api->put('/auth/token', 'AuthController@refreshToken');
   // 认证部分：删除token
   $api->delete('/auth/token', 'AuthController@deleteToken');
 
@@ -38,19 +38,19 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers'], function ($api) {
   // api item
   $api->post('/perm/item', 'PermController@itemStore');
   $api->delete('/perm/item', 'PermController@itemDestroy');
-  $api->match(['put', 'patch'], '/perm/item', 'PermController@itemUpdate');
+  $api->put('/perm/item', 'PermController@itemUpdate');
   $api->get('/perm/item', 'PermController@itemShow');
 
   // api group
   $api->post('/perm/group', 'PermController@groupStore');
   $api->delete('/perm/group', 'PermController@groupDestroy');
-  $api->match(['put', 'patch'], '/perm/group', 'PermController@groupUpdate');
+  $api->put('/perm/group', 'PermController@groupUpdate');
   $api->get('/perm/group', 'PermController@groupShow');
 
   // api collection
   $api->post('/perm/collection', 'PermController@collectionStore');
   $api->delete('/perm/collection', 'PermController@collectionDestroy');
-  $api->match(['put', 'patch'], '/perm/collection', 'PermController@collectionUpdate');
+  $api->put('/perm/collection', 'PermController@collectionUpdate');
   $api->get('/perm/collection', 'PermController@collectionShow');
   
   // 根据type，列出所有的element
@@ -60,11 +60,12 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers'], function ($api) {
   // 联系的增删改查
   $api->post('/perm/contact', 'PermController@contactStore');
   $api->delete('/perm/contact', 'PermController@contactDestroy');
-  $api->match(['put', 'patch'], '/perm/contact', 'PermController@contactUpdate');
+  $api->put('/perm/contact', 'PermController@contactUpdate');
   $api->get('/perm/contact', 'PermController@contactShow');
 
   // 设置用户的可调用次数
-  $api->patch('/perm/left-times', 'PermController@setLeftTimes');
+  $api->put('/perm/left-times', 'PermController@setLeftTimes');
+  $api->put('/perm/ava-time', 'PermController@setAvatime');
 });
 
 /* 统一登录系统 */

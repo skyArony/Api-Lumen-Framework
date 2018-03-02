@@ -25,9 +25,18 @@ class EduGradeController extends ApiController
 
         // token 两个作用，一个是确保拥有访问本api的权限，一是附带了sid信息
         if ($request->has("token")) {
-            // 从token中获取sid
-            $payload = json_decode(base64_decode(explode('.', $request->token)[1]), 1);
-            $request->sid = $payload['sid'];
+            // 解析token
+            $tokenInfo = explode('.', $request->token);
+            $header = $tokenInfo[0];
+            $payload = $tokenInfo[1];
+            $sign = $tokenInfo[2];
+            // 验证token合法性
+            $zzz = $this->base64url_encode(hash_hmac('sha256', $header.".".$payload, getenv('JWT_SECRET'), true));  // 这里要开启true
+            if ($sign == $zzz) {
+                $request->sid = json_decode(base64_decode($payload), 1)['sid']; // 从token中获取sid
+            } else {
+                return $this->createResponse(null, 400, -65535);
+            }
             /* 学期代码数组 */
             $startTerm = (int)(substr($request->sid, 0, 4));
             $allTerms = array('占位');
@@ -128,17 +137,14 @@ class EduGradeController extends ApiController
                 }
                 $studentData[$i-1]['isPass']                  = $isPass;
             }
-            return $this->createResponse(json_encode($studentData, JSON_UNESCAPED_UNICODE), 200, 0);
+            return $this->createResponse($studentData, 200, 0);
         } else {
             return $this->createResponse(null, 400, -65535);
         }
     }
 
-    // 解析路由路径中的参数
-    protected function route_parameter($name, $default = null)
-    {
-        $routeInfo = app('request')->route();
-
-        return array_get($routeInfo[2], $name, $default);
+    // base64url编码
+    protected function base64url_encode($data) {
+        return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
     }
 }

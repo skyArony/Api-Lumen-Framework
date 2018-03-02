@@ -272,6 +272,25 @@ token：XXXX.YYYY.ZZZZ
 
 **处理逻辑：** **token** 分别经过中间件的有效判断、权限判断、可调用次数判断后会传入，然后解析得到 **sid** ，用 **sid** 首先看数据库中有没有 可用的 **sessionid**，有则直接利用然后爬取成绩，没有则直接获取加密密码解密，然后爬取数据。
 
+**注意**
+
+接受 token **一定要**验证 token 的合法性，否则伪造的 token 可以通过，从而存在巨大的安全隐患！！！
+
+```php
+// 解析token
+$tokenInfo = explode('.', $request->token);
+$header = $tokenInfo[0];
+$payload = $tokenInfo[1];
+$sign = $tokenInfo[2];
+// 验证token合法性
+$zzz = $this->base64url_encode(hash_hmac('sha256', $header.".".$payload, getenv('JWT_SECRET'), true));  // 这里要开启true
+if ($sign == $zzz) {
+    $request->sid = json_decode(base64_decode($payload), 1)['sid']; // 从token中获取sid
+} else {
+    return $this->createResponse(null, 400, -65535);
+}
+```
+
 ## 三、其他
 ### 1. 验证码识别的实现
 **文件：**\app\Models\Idcode.php

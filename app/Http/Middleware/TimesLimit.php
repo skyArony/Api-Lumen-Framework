@@ -9,7 +9,7 @@ use App\Http\Controllers\ApiController;
 
 /* 
  *  系统：api控制系统
- *  功能：前置中间件：判断进入的请求是否还有可以用的调用次数
+ *  功能：前置中间件：判断进入的请求是否还有可以用的调用次数,已经是否在授权期以内
  * 
  */
 class TimesLimit
@@ -27,9 +27,15 @@ class TimesLimit
         $requestData = JWTAuth::parseToken()->toUser()->toArray();
         $user = User::where('email', '=', $requestData['email'])->first();
         if ($user->left_times > 0) {
-            $user->left_times = $user->left_times - 1;
-            $user->save();
-            return $next($request);
+            // 判断用户是否在授权期以内
+            if(time() >= $user->start_at && time() <= $user->end_at) {
+                $user->left_times = $user->left_times - 1;
+                $user->save();
+                return $next($request);
+            } else {
+                $apiController = new ApiController();
+                return $apiController->createResponse(null, 429, -10);
+            }
         } else {
             $apiController = new ApiController();
             return $apiController->createResponse(null, 429, -10);

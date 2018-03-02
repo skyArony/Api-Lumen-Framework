@@ -43,13 +43,13 @@
 			"response": []
 		},
 		{
-			"name": "注册一条API",
+			"name": "DELETE方式删除当前token",
 			"request": {
-				"method": "POST",
+				"method": "DELETE",
 				"header": [],
 				"body": {},
 				"url": {
-					"raw": "https://api.isky31.com/perm/item?key=USRE-GetAllUser&url=https://api.isky31.com/users&method=GET&intro=获取所有的users",
+					"raw": "https://api.isky31.com/auth/token?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDMvYXBpL2F1dGgvdG9rZW4iLCJpYXQiOjE1MTU3NDYzMDIsImV4cCI6MTUxNTc0OTkwMiwibmJmIjoxNTE1NzQ2MzAyLCJqdGkiOiI3YWRCUk9pY2x6VWFBNGgzIiwic3ViIjoxLCJwcnYiOiI4N2UwYWYxZWY5ZmQxNTgxMmZkZWM5NzE1M2ExNGUwYjA0NzU0NmFhIn0.Dj7Eo2XrVldelGCkkCd5O9_YvbhKq514fiSuX37XamM",
 					"protocol": "https",
 					"host": [
 						"api",
@@ -57,28 +57,13 @@
 						"com"
 					],
 					"path": [
-						"perm",
-						"item"
+						"auth",
+						"token"
 					],
 					"query": [
 						{
-							"key": "key",
-							"value": "USRE-GetAllUser",
-							"equals": true
-						},
-						{
-							"key": "url",
-							"value": "https://api.isky31.com/users",
-							"equals": true
-						},
-						{
-							"key": "method",
-							"value": "GET",
-							"equals": true
-						},
-						{
-							"key": "intro",
-							"value": "获取所有的users",
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDMvYXBpL2F1dGgvdG9rZW4iLCJpYXQiOjE1MTU3NDYzMDIsImV4cCI6MTUxNTc0OTkwMiwibmJmIjoxNTE1NzQ2MzAyLCJqdGkiOiI3YWRCUk9pY2x6VWFBNGgzIiwic3ViIjoxLCJwcnYiOiI4N2UwYWYxZWY5ZmQxNTgxMmZkZWM5NzE1M2ExNGUwYjA0NzU0NmFhIn0.Dj7Eo2XrVldelGCkkCd5O9_YvbhKq514fiSuX37XamM",
 							"equals": true
 						}
 					]
@@ -88,13 +73,47 @@
 			"response": []
 		},
 		{
-			"name": "删除一条API",
+			"name": "PUT方式刷新token",
 			"request": {
-				"method": "DELETE",
+				"method": "PUT",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"token\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDMvYXBpL2F1dGgvdG9rZW4iLCJpYXQiOjE1MTU3NDg4ODYsImV4cCI6MTUxNTc1MjQ4NiwibmJmIjoxNTE1NzQ4ODg2LCJqdGkiOiJFMlBqRDdTdVlCcFNZZkRwIiwic3ViIjoxLCJwcnYiOiI4N2UwYWYxZWY5ZmQxNTgxMmZkZWM5NzE1M2ExNGUwYjA0NzU0NmFhIn0.U6-qvj2T9hG9Lkssdl0o0L25unRc2UHxe99j7muVob0\"\n}"
+				},
 				"url": {
-					"raw": "https://api.isky31.com/perm/item?key=",
+					"raw": "https://api.isky31.com/auth/token",
+					"protocol": "https",
+					"host": [
+						"api",
+						"isky31",
+						"com"
+					],
+					"path": [
+						"auth",
+						"token"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "注册一条API",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"key\":\"USRE-GetAllUser\",\n\t\"url\":\"https://api.isky31.com/users\",\n\t\"method\":\"GET\",\n\t\"intro\":\"获取所有的users\"\n}"
+				},
+				"url": {
+					"raw": "https://api.isky31.com/perm/item",
 					"protocol": "https",
 					"host": [
 						"api",
@@ -104,13 +123,37 @@
 					"path": [
 						"perm",
 						"item"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "删除一些API",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\"API-ShowAllElement\",\"API-ShowAllUsers\"]"
+				},
+				"url": {
+					"raw": "https://api.isky31.com/perm/item",
+					"protocol": "https",
+					"host": [
+						"api",
+						"isky31",
+						"com"
 					],
-					"query": [
-						{
-							"key": "key",
-							"value": "",
-							"equals": true
-						}
+					"path": [
+						"perm",
+						"item"
 					]
 				},
 				"description": ""
@@ -122,9 +165,12 @@
 			"request": {
 				"method": "PUT",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"key\":\"api-key(只有这个是必须的)\",\n\t\"newkey\":\"new-key\",\n\t\"url\":\"https:api.isky31.com/\",\n\t\"method\":\"GET\",\n\t\"intro\":\"修改后的API\"\n}"
+				},
 				"url": {
-					"raw": "https://api.isky31.com/perm/item?key&newkey&url&method&intro",
+					"raw": "https://api.isky31.com/perm/item",
 					"protocol": "https",
 					"host": [
 						"api",
@@ -134,33 +180,6 @@
 					"path": [
 						"perm",
 						"item"
-					],
-					"query": [
-						{
-							"key": "key",
-							"value": "",
-							"equals": false
-						},
-						{
-							"key": "newkey",
-							"value": "",
-							"equals": false
-						},
-						{
-							"key": "url",
-							"value": "",
-							"equals": false
-						},
-						{
-							"key": "method",
-							"value": "",
-							"equals": false
-						},
-						{
-							"key": "intro",
-							"value": "",
-							"equals": false
-						}
 					]
 				},
 				"description": ""
@@ -201,10 +220,18 @@
 			"name": "增加一个GROUP",
 			"request": {
 				"method": "POST",
-				"header": [],
-				"body": {},
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"key\":\"GROUP-1\",\n\t\"intro\":\"firstGROUP\"\n}"
+				},
 				"url": {
-					"raw": "https://api.isky31.com/perm/group?key=&intro=",
+					"raw": "https://api.isky31.com/perm/group",
 					"protocol": "https",
 					"host": [
 						"api",
@@ -214,18 +241,6 @@
 					"path": [
 						"perm",
 						"group"
-					],
-					"query": [
-						{
-							"key": "key",
-							"value": "",
-							"equals": true
-						},
-						{
-							"key": "intro",
-							"value": "",
-							"equals": true
-						}
 					]
 				},
 				"description": ""
@@ -233,13 +248,21 @@
 			"response": []
 		},
 		{
-			"name": "删除一个GROUP",
+			"name": "删除一些GROUP",
 			"request": {
 				"method": "DELETE",
-				"header": [],
-				"body": {},
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\"API-ShowAllElement\",\"API-ShowAllUsers\"]"
+				},
 				"url": {
-					"raw": "https://api.isky31.com/perm/group?key=",
+					"raw": "https://api.isky31.com/perm/group",
 					"protocol": "https",
 					"host": [
 						"api",
@@ -249,13 +272,6 @@
 					"path": [
 						"perm",
 						"group"
-					],
-					"query": [
-						{
-							"key": "key",
-							"value": "",
-							"equals": true
-						}
 					]
 				},
 				"description": ""
@@ -267,9 +283,12 @@
 			"request": {
 				"method": "PUT",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"key\":\"api-key(只有这个是必须的)\",\n\t\"newkey\":\"new-key\",\n\t\"intro\":\"修改后的API\"\n}"
+				},
 				"url": {
-					"raw": "https://api.isky31.com/perm/group?key=&newkey&intro=",
+					"raw": "https://api.isky31.com/perm/group",
 					"protocol": "https",
 					"host": [
 						"api",
@@ -279,23 +298,6 @@
 					"path": [
 						"perm",
 						"group"
-					],
-					"query": [
-						{
-							"key": "key",
-							"value": "",
-							"equals": true
-						},
-						{
-							"key": "newkey",
-							"value": "",
-							"equals": false
-						},
-						{
-							"key": "intro",
-							"value": "",
-							"equals": true
-						}
 					]
 				},
 				"description": ""
@@ -336,10 +338,18 @@
 			"name": "增加一个COLLECTION",
 			"request": {
 				"method": "POST",
-				"header": [],
-				"body": {},
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"key\":\"Collection-1\",\n\t\"intro\":\"The First Collection\",\n\t\"istemp\":true\n}"
+				},
 				"url": {
-					"raw": "https://api.isky31.com/perm/collection?key=Collection-1&intro=The First Collection&istemp",
+					"raw": "https://api.isky31.com/perm/collection",
 					"protocol": "https",
 					"host": [
 						"api",
@@ -349,24 +359,6 @@
 					"path": [
 						"perm",
 						"collection"
-					],
-					"query": [
-						{
-							"key": "key",
-							"value": "Collection-1",
-							"equals": true
-						},
-						{
-							"key": "intro",
-							"value": "The First Collection",
-							"equals": true
-						},
-						{
-							"key": "istemp",
-							"value": "",
-							"equals": false,
-							"description": "是否是临时用的，一个标记，便于管理"
-						}
 					]
 				},
 				"description": ""
@@ -374,13 +366,16 @@
 			"response": []
 		},
 		{
-			"name": "删除一个COLLECTION",
+			"name": "删除一些COLLECTION",
 			"request": {
 				"method": "DELETE",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": "[\"API-ShowAllElement\",\"API-ShowAllUsers\"]"
+				},
 				"url": {
-					"raw": "https://api.isky31.com/perm/collection?key=",
+					"raw": "https://api.isky31.com/perm/collection",
 					"protocol": "https",
 					"host": [
 						"api",
@@ -390,13 +385,6 @@
 					"path": [
 						"perm",
 						"collection"
-					],
-					"query": [
-						{
-							"key": "key",
-							"value": "",
-							"equals": true
-						}
 					]
 				},
 				"description": ""
@@ -408,9 +396,12 @@
 			"request": {
 				"method": "PUT",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"key\":\"api-key(只有这个是必须的)\",\n\t\"newkey\":\"new-key\",\n\t\"intro\":\"修改后的API\",\n\t\"istemp\":true\n}"
+				},
 				"url": {
-					"raw": "https://api.isky31.com/perm/collection?key=&newkey&intro&istemp",
+					"raw": "https://api.isky31.com/perm/collection",
 					"protocol": "https",
 					"host": [
 						"api",
@@ -420,29 +411,6 @@
 					"path": [
 						"perm",
 						"collection"
-					],
-					"query": [
-						{
-							"key": "key",
-							"value": "",
-							"equals": true
-						},
-						{
-							"key": "newkey",
-							"value": "",
-							"equals": false
-						},
-						{
-							"key": "intro",
-							"value": "",
-							"equals": false
-						},
-						{
-							"key": "istemp",
-							"value": "",
-							"equals": false,
-							"description": "是否是临时用的，一个标记，便于管理"
-						}
 					]
 				},
 				"description": ""
@@ -514,10 +482,18 @@
 			"name": "四种联系：新建",
 			"request": {
 				"method": "POST",
-				"header": [],
-				"body": {},
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"container\":\"Collection-1\",\n\t\"element\":[\"mnoPgRz10f@gmail.com\"],\n\t\"type\":\"cu\"\n}"
+				},
 				"url": {
-					"raw": "https://api.isky31.com/perm/contact?container=Collection-1&element=[\"mnoPgRz10f@gmail.com\"]&type=cu",
+					"raw": "https://api.isky31.com/perm/contact",
 					"protocol": "https",
 					"host": [
 						"api",
@@ -527,37 +503,6 @@
 					"path": [
 						"perm",
 						"contact"
-					],
-					"query": [
-						{
-							"key": "container",
-							"value": "Collection-1",
-							"equals": true
-						},
-						{
-							"key": "element",
-							"value": "[\"mnoPgRz10f@gmail.com\"]",
-							"equals": true
-						},
-						{
-							"key": "type",
-							"value": "cu",
-							"equals": true
-						},
-						{
-							"key": "start",
-							"value": "",
-							"equals": false,
-							"description": "cu联系时选择开始时间",
-							"disabled": true
-						},
-						{
-							"key": "end",
-							"value": "",
-							"equals": false,
-							"description": "cu联系时选择结束时间",
-							"disabled": true
-						}
 					]
 				},
 				"description": ""
@@ -569,49 +514,12 @@
 			"request": {
 				"method": "DELETE",
 				"header": [],
-				"body": {},
-				"url": {
-					"raw": "https://api.isky31.com/perm/contact?container&element&type",
-					"protocol": "https",
-					"host": [
-						"api",
-						"isky31",
-						"com"
-					],
-					"path": [
-						"perm",
-						"contact"
-					],
-					"query": [
-						{
-							"key": "container",
-							"value": "",
-							"equals": false
-						},
-						{
-							"key": "element",
-							"value": "",
-							"equals": false
-						},
-						{
-							"key": "type",
-							"value": "",
-							"equals": false
-						}
-					]
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"container\":\"Collection-1\",\n\t\"element\":[\"API-ShowAllElement\",\"API-ShowAllUsers\"],\n\t\"type\":\"ci\"\n}\n"
 				},
-				"description": ""
-			},
-			"response": []
-		},
-		{
-			"name": "C-U联系：修改",
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {},
 				"url": {
-					"raw": "https://api.isky31.com/perm/contact?collection&email&start&end",
+					"raw": "https://api.isky31.com/perm/contact",
 					"protocol": "https",
 					"host": [
 						"api",
@@ -621,30 +529,6 @@
 					"path": [
 						"perm",
 						"contact"
-					],
-					"query": [
-						{
-							"key": "collection",
-							"value": "",
-							"equals": false
-						},
-						{
-							"key": "email",
-							"value": "",
-							"equals": false
-						},
-						{
-							"key": "start",
-							"value": "",
-							"equals": false,
-							"description": "修改权限开始时间"
-						},
-						{
-							"key": "end",
-							"value": "",
-							"equals": false,
-							"description": "修改权限结束时间"
-						}
 					]
 				},
 				"description": ""
@@ -691,11 +575,19 @@
 		{
 			"name": "设置一个用户的剩余API可以调用次数",
 			"request": {
-				"method": "PATCH",
-				"header": [],
-				"body": {},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"times\":1000,\n\t\"email\":\"XXXX@gmail.com\"\n}"
+				},
 				"url": {
-					"raw": "https://api.isky31.com/perm/left-times?times=100&email=mnoPgRz10f@gmail.com",
+					"raw": "https://api.isky31.com/perm/left-times",
 					"protocol": "https",
 					"host": [
 						"api",
@@ -705,18 +597,6 @@
 					"path": [
 						"perm",
 						"left-times"
-					],
-					"query": [
-						{
-							"key": "times",
-							"value": "100",
-							"equals": true
-						},
-						{
-							"key": "email",
-							"value": "mnoPgRz10f@gmail.com",
-							"equals": true
-						}
 					]
 				},
 				"description": ""
@@ -724,7 +604,38 @@
 			"response": []
 		},
 		{
-			"name": "获取所有的users",
+			"name": "设置一个开发者或系统的可使用时间",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\":\"XXXX@gmail.com\",\n\t\"start\":\"timestamp\",\n\t\"end\":\"timestamp\"\n}"
+				},
+				"url": {
+					"raw": "https://api.isky31.com/perm/ava-time",
+					"protocol": "https",
+					"host": [
+						"api",
+						"isky31",
+						"com"
+					],
+					"path": [
+						"perm",
+						"ava-time"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "获取所有的users—url方式",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -753,13 +664,43 @@
 			"response": []
 		},
 		{
+			"name": "获取所有的users—header方式附带token",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDMvYXBpL2F1dGgvdG9rZW4iLCJpYXQiOjE1MTU3NDYzMDIsImV4cCI6MTUxNTc0OTkwMiwibmJmIjoxNTE1NzQ2MzAyLCJqdGkiOiI3YWRCUk9pY2x6VWFBNGgzIiwic3ViIjoxLCJwcnYiOiI4N2UwYWYxZWY5ZmQxNTgxMmZkZWM5NzE1M2ExNGUwYjA0NzU0NmFhIn0.Dj7Eo2XrVldelGCkkCd5O9_YvbhKq514fiSuX37XamM"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "https://api.isky31.com/users",
+					"protocol": "https",
+					"host": [
+						"api",
+						"isky31",
+						"com"
+					],
+					"path": [
+						"users"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
 			"name": "绑定三翼通行证",
 			"request": {
 				"method": "POST",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"sid\":\"2015551509\",\n\t\"edupd\":\"********\",\n\t\"portalpd\":\"********\"\n}"
+				},
 				"url": {
-					"raw": "https://api.isky31.com/password/bind?sid&edupd&portalpd",
+					"raw": "https://api.isky31.com/password/bind",
 					"protocol": "https",
 					"host": [
 						"api",
@@ -769,26 +710,6 @@
 					"path": [
 						"password",
 						"bind"
-					],
-					"query": [
-						{
-							"key": "sid",
-							"value": "",
-							"equals": false,
-							"description": "学号"
-						},
-						{
-							"key": "edupd",
-							"value": "",
-							"equals": false,
-							"description": "教务密码"
-						},
-						{
-							"key": "portalpd",
-							"value": "",
-							"equals": false,
-							"description": "信息门户密码"
-						}
 					]
 				},
 				"description": ""
@@ -856,7 +777,7 @@
 				"header": [],
 				"body": {},
 				"url": {
-					"raw": "https://api.isky31.com/edu/grade/{term}  ?token",
+					"raw": "https://api.isky31.com/edu/grade/1?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5pc2t5MzEuY29tL2F1dGgvdG9rZW4iLCJpYXQiOjE1MTk5ODA1NzUsImV4cCI6MTUxOTk4Nzc3NSwibmJmIjoxNTE5OTgwNTc1LCJqdGkiOiJJVDZkYVZYZG90R0RFWWhrIiwic3ViIjoxLCJwcnYiOiI4N2UwYWYxZWY5ZmQxNTgxMmZkZWM5NzE1M2ExNGUwYjA0NzU0NmFhIn0.xnzQS9nqemouNhapoGuYJkhsvs-A8_m6A2_apSQcbjs",
 					"protocol": "https",
 					"host": [
 						"api",
@@ -866,13 +787,13 @@
 					"path": [
 						"edu",
 						"grade",
-						"{term}  "
+						"1"
 					],
 					"query": [
 						{
 							"key": "token",
-							"value": "",
-							"equals": false
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5pc2t5MzEuY29tL2F1dGgvdG9rZW4iLCJpYXQiOjE1MTk5ODA1NzUsImV4cCI6MTUxOTk4Nzc3NSwibmJmIjoxNTE5OTgwNTc1LCJqdGkiOiJJVDZkYVZYZG90R0RFWWhrIiwic3ViIjoxLCJwcnYiOiI4N2UwYWYxZWY5ZmQxNTgxMmZkZWM5NzE1M2ExNGUwYjA0NzU0NmFhIn0.xnzQS9nqemouNhapoGuYJkhsvs-A8_m6A2_apSQcbjs",
+							"equals": true
 						}
 					]
 				},

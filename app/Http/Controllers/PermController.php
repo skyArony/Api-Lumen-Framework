@@ -11,10 +11,10 @@ use App\Models\DB\api_lumen\CollectionUser;
 use App\Models\DB\api_lumen\GroupItem;
 use App\Models\DB\api_lumen\User;
 
-/* 
+/*
  *  系统：api控制系统
  *  功能：api四种关系的之间的联系的增删改查，用此关系维护api的权限分配
- * 
+ *
  */
 class PermController extends ApiController
 {
@@ -47,21 +47,26 @@ class PermController extends ApiController
         }
     }
 
-    // item:删 必需key
+    // item:删 必需key,key为数组
     public function itemDestroy(Request $request)
     {
         if ($request->has('key')) {
-            switch (ApiItem::where('item_key', '=', $request->key)->delete()) {
-                case true:
-                    return $this->createResponse(null, 200, 0);
-                    break;
-                case false:
-                    return $this->createResponse(null, 200, 3);
-                    break;
-                case null:
-                    return $this->createResponse(null, 500, -2);
-                    break;
+            $keyArray = json_decode($request->key, 1);
+            $res = array();
+            foreach ($keyArray as $key => $value) {
+                switch (ApiItem::where('item_key', '=', $value)->delete()) {
+                    case true:
+                        $res[$value] = 'success';
+                        break;
+                    case false:
+                        $res[$value] = 'success';
+                        break;
+                    case null:
+                        $res[$value] = 'fail';
+                        break;
+                }
             }
+            return $this->createResponse($res, 200, 0);
         } else {
             return $this->createResponse(null, 400, -65535);
         }
@@ -72,10 +77,18 @@ class PermController extends ApiController
     {
         if ($request->has('key')) {
             if ($item = ApiItem::where('item_key', '=', $request->key)->first()) {
-                if ($request->has('newkey')) $item->item_key = $request->newkey;
-                if ($request->has('url')) $item->url = $request->url;
-                if ($request->has('method')) $item->method = strtoupper($request->method);
-                if ($request->has('intro')) $item->intro = $request->intro;
+                if ($request->has('newkey')) {
+                    $item->item_key = $request->newkey;
+                }
+                if ($request->has('url')) {
+                    $item->url = $request->url;
+                }
+                if ($request->has('method')) {
+                    $item->method = strtoupper($request->method);
+                }
+                if ($request->has('intro')) {
+                    $item->intro = $request->intro;
+                }
                 if ($item->save()) {
                     $key = $request->has('newkey') ? $request->newkey : $request->key;
                     $res = ApiItem::where('item_key', '=', $key)->first();
@@ -89,7 +102,6 @@ class PermController extends ApiController
             } else {
                 return $this->createResponse(null, 400, -7);
             }
-            
         } else {
             return $this->createResponse(null, 400, -65535);
         }
@@ -129,27 +141,32 @@ class PermController extends ApiController
             }
         } else {
             return $this->createResponse(null, 400, -65535);
-        }        
+        }
     }
 
     // group:删  必须key
     public function groupDestroy(Request $request)
     {
         if ($request->has('key')) {
-            switch (ApiGroup::where('group_key', '=', $request->key)->delete()) {
-                case true:
-                    return $this->createResponse(null, 200, 0);
-                    break;
-                case false:
-                    return $this->createResponse(null, 200, 3);
-                    break;
-                case null:
-                    return $this->createResponse(null, 500, -2);
-                    break;
+            $keyArray = json_decode($request->key, 1);
+            $res = array();
+            foreach ($keyArray as $key => $value) {
+                switch (ApiGroup::where('group_key', '=', $value)->delete()) {
+                    case true:
+                        $res[$value] = 'success';
+                        break;
+                    case false:
+                        $res[$value] = 'success';
+                        break;
+                    case null:
+                        $res[$value] = 'fail';
+                        break;
+                }
             }
+            return $this->createResponse($res, 200, 0);
         } else {
             return $this->createResponse(null, 400, -65535);
-        }        
+        }
     }
 
     // group:改  必须key
@@ -157,8 +174,12 @@ class PermController extends ApiController
     {
         if ($request->has('key')) {
             if ($group = ApiGroup::where('group_key', '=', $request->key)->first()) {
-                if ($request->has('newkey')) $group->group_key = $request->newkey;
-                if ($request->has('intro')) $group->intro = $request->intro;
+                if ($request->has('newkey')) {
+                    $group->group_key = $request->newkey;
+                }
+                if ($request->has('intro')) {
+                    $group->intro = $request->intro;
+                }
                 if ($group->save()) {
                     $key = $request->has('newkey') ? $request->newkey : $request->key;
                     $res = Apigroup::where('group_key', '=', $key)->first();
@@ -174,7 +195,7 @@ class PermController extends ApiController
             }
         } else {
             return $this->createResponse(null, 400, -65535);
-        }        
+        }
     }
 
     // group:查
@@ -189,7 +210,7 @@ class PermController extends ApiController
             }
         } else {
             return $this->createResponse(null, 400, -65535);
-        }        
+        }
     }
 
     // collection:增  必须 key intro 默认istemp = true
@@ -202,7 +223,9 @@ class PermController extends ApiController
             $collection = new ApiCollection;
             $collection->collection_key = $request->key;
             $collection->intro = $request->intro;
-            if ($request->has('istemp')) $collection->istemp = $request->istemp;
+            if ($request->has('istemp')) {
+                $collection->istemp = $request->istemp;
+            }
             if ($collection->save()) {
                 $res = ApiCollection::where('collection_key', '=', $request->key)->first();
                 $data = json_encode($res->toArray(), JSON_UNESCAPED_UNICODE);
@@ -212,27 +235,32 @@ class PermController extends ApiController
             }
         } else {
             return $this->createResponse(null, 400, -65535);
-        }          
+        }
     }
 
     // collection:删
     public function collectionDestroy(Request $request)
     {
         if ($request->has('key')) {
-            switch (ApiCollection::where('collection_key', '=', $request->key)->delete()) {
-                case true:
-                    return $this->createResponse(null, 200, 0);
-                    break;
-                case false:
-                    return $this->createResponse(null, 200, 3);
-                    break;
-                case null:
-                    return $this->createResponse(null, 500, -2);
-                    break;
+            $keyArray = json_decode($request->key, 1);
+            $res = array();
+            foreach ($keyArray as $key => $value) {
+                switch (ApiCollection::where('collection_key', '=', $value)->delete()) {
+                    case true:
+                        $res[$value] = 'success';
+                        break;
+                    case false:
+                        $res[$value] = 'success';
+                        break;
+                    case null:
+                        $res[$value] = 'fail';
+                        break;
+                }
             }
+            return $this->createResponse($res, 200, 0);
         } else {
             return $this->createResponse(null, 400, -65535);
-        }           
+        }
     }
 
     // collection:改
@@ -240,9 +268,15 @@ class PermController extends ApiController
     {
         if ($request->has('key')) {
             if ($collection = ApiCollection::where('collection_key', '=', $request->key)->first()) {
-                if ($request->has('newkey')) $collection->collection_key = $request->newkey;
-                if ($request->has('intro')) $collection->intro = $request->intro;
-                if ($request->has('istemp')) $collection->istemp = $request->istemp;
+                if ($request->has('newkey')) {
+                    $collection->collection_key = $request->newkey;
+                }
+                if ($request->has('intro')) {
+                    $collection->intro = $request->intro;
+                }
+                if ($request->has('istemp')) {
+                    $collection->istemp = $request->istemp;
+                }
                 if ($collection->save()) {
                     $key = $request->has('newkey') ? $request->newkey : $request->key;
                     $res = ApiCollection::where('collection_key', '=', $key)->first();
@@ -258,7 +292,7 @@ class PermController extends ApiController
             }
         } else {
             return $this->createResponse(null, 400, -65535);
-        }         
+        }
     }
 
     // collection:查
@@ -274,11 +308,11 @@ class PermController extends ApiController
             }
         } else {
             return $this->createResponse(null, 400, -65535);
-        }           
-    } 
+        }
+    }
 
     // 展示所有的元素，选择type：item，GROUP，collection
-    public function showAllElement(Request $request) 
+    public function showAllElement(Request $request)
     {
         if ($request->has('type')) {
             switch ($request->type) {
@@ -305,14 +339,14 @@ class PermController extends ApiController
                     } else {
                         return $this->createResponse(null, 404, -8);
                     }
-                    break;                    
+                    break;
                 default:
                     return $this->createResponse(null, 400, -65535);
                     break;
             }
         } else {
             return $this->createResponse(null, 400, -65535);
-        }            
+        }
     }
 
     // g-i，c-i，c-g，c-u 四种联系的插入  第一个是容器key，第二个是元素json数组，第三个是关系类型,c-u可选择开始和结束是时间，类型为timestamp
@@ -396,8 +430,6 @@ class PermController extends ApiController
                         $collectionUser = new CollectionUser;
                         $collectionUser->collection_key = $request->container;
                         $collectionUser->email = $value;
-                        $collectionUser->start_at = $request->has('start') ? date("Y-m-d h:i:s", $request->start) : date("Y-m-d h:i:s",time());
-                        $collectionUser->end_at = $request->has('end') ? date("Y-m-d h:i:s", $request->end) : date("Y-m-d h:i:s",time());
                         $collectionUser->save();
                     }
                     return $this->createResponse(null, 201, 0);
@@ -408,7 +440,7 @@ class PermController extends ApiController
             }
         } else {
             return $this->createResponse(null, 400, -65535);
-        } 
+        }
     }
 
     // g-i，c-i，c-g，c-u 四种联系的删除  第一个是容器key，第二个是元素json数组，第三个是关系类型
@@ -447,30 +479,6 @@ class PermController extends ApiController
                 default:
                     return $this->createResponse(null, 400, -65535);
                     break;
-            }
-        } else {
-            return $this->createResponse(null, 400, -65535);
-        }
-    }
-
-    // c-u 联系的起始时间 ,两个元素必须
-    public function contactUpdate(Request $request)
-    {
-        if ($request->has('collection', 'email')) {
-            if ($collectionUser = CollectionUser::where('collection_key', '=', $request->collection)->where('email', '=', $request->email)->first()) {
-                if ($request->has('start')) $collectionUser->start_at = date("Y-m-d h:i:s", $request->start);
-                if ($request->has('end')) $collectionUser->end_at = date("Y-m-d h:i:s", $request->end);
-                if ($collectionUser->save()) {
-                    $res = CollectionUser::where('collection_key', '=', $request->collection)->where('email', '=', $request->email)->first();
-                    $data = json_encode($res->toArray(), JSON_UNESCAPED_UNICODE);
-                    // 成功
-                    return $this->createResponse($data, 201, 0);
-                } else {
-                    // 返回 500，未知错误
-                    return $this->createResponse(null, 500, -2);
-                }
-            } else {
-                return $this->createResponse(null, 400, -7);
             }
         } else {
             return $this->createResponse(null, 400, -65535);
@@ -537,6 +545,28 @@ class PermController extends ApiController
         }
     }
 
-
-   
+    // 设置账户的可调用开始时间和结束时间
+    public function setAvatime(Request $request)
+    {
+        if ($request->has('email')) {
+            if ($request->has('start') || $request->has('end')) {
+                if ($user = User::where('email', '=', $request->email)->first()) {
+                    if ($request->has('start')) {
+                        $user->start_at = date("Y-m-d h:i:s", $request->start);
+                    }
+                    if ($request->has('end')) {
+                        $user->end_at = date("Y-m-d h:i:s", $request->end);
+                    }
+                    $user->save();
+                    return $this->createResponse(null, 201, 0);
+                } else {
+                    return $this->createResponse(null, 400, -7);
+                }
+            } else {
+                return $this->createResponse(null, 400, -65535);
+            }
+        } else {
+            return $this->createResponse(null, 400, -65535);
+        }
+    }
 }
